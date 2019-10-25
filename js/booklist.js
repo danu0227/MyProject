@@ -18,7 +18,7 @@ var unchecked_icon = "<i class = \"far fa-square\"></i>";
 var delete_icon = "<i class=\"far fa-times-circle fa-xs delete_icon\"></i>"
 
 var check_mode = document.getElementById("check_mode");
-var current_mode = 1;
+var current_mode = 0;
 var all = 0;
 var check_only = 1;
 var uncheck_only = 2;
@@ -53,16 +53,13 @@ function drawtable(list){
       line_check = document.createElement("td");
       line_title = document.createElement("td");
       line_writer = document.createElement("td");
-      line_delete = document.createElement("td");
 
       line_check.classList.add("check");
       line_title.classList.add("title");
       line_writer.classList.add("writer");
-      line_delete.classList.add("delete_button");
 
       line_title.innerText = booklist[1][i].title;
       line_writer.innerText = booklist[1][i].writer;
-      line_delete.innerHTML = delete_icon;
 
 
       if (booklist[1][i].check == "TRUE"){
@@ -74,47 +71,6 @@ function drawtable(list){
         unreadnum++;
       }
 
-      line_check.onclick = function(){
-        if (a.check == "TRUE"){
-          readnum--;
-          unreadnum++;
-          a.check = "FALSE";
-          this.innerHTML = unchecked_icon;
-          if (current_mode == 0){
-            $(this.parentElement).fadeOut("slow", function(){
-              $(this).remove();
-            });
-          }
-        }
-        else{
-          readnum++;
-          unreadnum--;
-          a.check = "TRUE";
-          this.innerHTML = checked_icon;
-          if (current_mode == 1){
-            $(this.parentElement).fadeOut("slow", function(){
-              $(this).remove();
-            });
-          }
-        }
-        document.getElementById("counts").innerText = readnum.toString() + " / " + allnum.toString();
-        database.ref(childsnapshot.getRef()).set(a);
-      }
-
-      line_delete.onclick = function(){
-        allnum--;
-        if (a.check = "TRUE"){
-          readnum--;
-        }
-        else{
-          unreadnum--;
-        }
-        database.ref(childsnapshot.getRef()).remove();
-        $(this.parentElement).fadeOut("slow", function(){
-          $(this).remove();
-        });
-        document.getElementById("counts").innerText = readnum.toString() + " / " + allnum.toString();
-      }
 
       line_title.onclick = function(){
         var el = document.createElement('textarea');
@@ -156,7 +112,6 @@ function drawtable(list){
       table_line.appendChild(line_check);
       table_line.appendChild(line_title);
       table_line.appendChild(line_writer);
-      table_line.appendChild(line_delete);
 
       if (current_mode == 0 && booklist[1][i].check == "TRUE") {
         line_check.innerHTML = checked_icon;
@@ -201,51 +156,6 @@ check_mode.onclick = function(){
   drawtable(datalist);
 }
 
-document.getElementById("add_data").onclick = function(){
-  var new_title = document.getElementById("new_title").value;
-  var new_writer = document.getElementById("new_writer").value;
-
-  if (new_writer == ""){
-    new_writer = "-";
-  }
-  else if (new_title == ""){
-    document.getElementById("new_title").value = "제목 : 필수 입력 사항!";
-  }
-  else{
-    document.getElementById("new_title").value = "";
-    document.getElementById("new_writer").value = "";
-    var new_book = {
-      check: "FALSE",
-      title: new_title,
-      writer: new_writer
-    };
-    datalist.push(new_book);
-
-/*    table_line = document.createElement("tr");
-    line_check = document.createElement("td");
-    line_title = document.createElement("td");
-    line_writer = document.createElement("td");
-    line_delete = document.createElement("td");
-
-    line_check.classList.add("check");
-    line_title.classList.add("title");
-    line_writer.classList.add("writer");
-    line_delete.classList.add("delete_button");
-
-    line_check.innerHTML = unchecked_icon;
-    line_title.innerText = new_title;
-    line_writer.innerText = new_writer;
-    line_delete.innerHTML = delete_icon;
-
-    table_line.appendChild(line_check);
-    table_line.appendChild(line_title);
-    table_line.appendChild(line_writer);
-    table_line.appendChild(line_delete);
-
-    table.appendChild(table_line);*/
-    drawtable(datalist);
-  }
-}
 
 document.getElementById('by_title').onclick = function(){
   if (sort_mode == 'title'){

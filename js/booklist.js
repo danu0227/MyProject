@@ -18,7 +18,7 @@ var unchecked_icon = "<i class = \"far fa-square\"></i>";
 var delete_icon = "<i class=\"far fa-times-circle fa-xs delete_icon\"></i>"
 
 var check_mode = document.getElementById("check_mode");
-var current_mode = 0;
+var current_mode = 1;
 var all = 0;
 var check_only = 1;
 var uncheck_only = 2;
